@@ -8,9 +8,9 @@ from Crypto.Util.Padding import pad, unpad
 
 import os
 import time
-# ============================================================
+
 # FILE FUNCTIONS
-# ============================================================
+
 def save_file(filename, data):
     with open(filename, "wb") as f:
         f.write(data)
@@ -18,9 +18,9 @@ def save_file(filename, data):
 def read_file(filename):
     with open(filename, "rb") as f:
         return f.read()
-# ============================================================
+
 # KEY GENERATION
-# ============================================================
+
 def generate_keys():
     # AES-128 key
     if not os.path.exists("aes128.key"):
@@ -48,9 +48,9 @@ def generate_keys():
             public_key.export_key()
         )
         print("RSA keys generated.")
-# ============================================================
+
 # CREATE INPUT FILE
-# ============================================================
+
 def create_input_file():
     if not os.path.exists("input.txt"):
         text = (
@@ -59,9 +59,9 @@ def create_input_file():
         )
         with open("input.txt", "w") as f:
             f.write(text)
-# ============================================================
+
 # AES ENCRYPTION
-# ============================================================
+
 def aes_encrypt(key_size, mode):
     if key_size == 128:
         key = read_file("aes128.key")
@@ -69,9 +69,9 @@ def aes_encrypt(key_size, mode):
         key = read_file("aes256.key")
     data = read_file("input.txt")
     start = time.perf_counter()
-    # --------------------------------------------------------
+
     # ECB MODE
-    # --------------------------------------------------------
+    
     if mode == "ECB":
         cipher = AES.new(key, AES.MODE_ECB)
         # ECB requires padding
@@ -82,9 +82,9 @@ def aes_encrypt(key_size, mode):
             "aes_encrypted.bin",
             encrypted_data
         )
-    # --------------------------------------------------------
+ 
     # CFB MODE
-    # --------------------------------------------------------
+   
     elif mode == "CFB":
         # Generate random IV
         iv = get_random_bytes(AES.block_size)
@@ -107,9 +107,9 @@ def aes_encrypt(key_size, mode):
     print("Mode     :", mode)
     print("Output   : aes_encrypted.bin")
     print("Time     :", round(elapsed, 6), "ms")
-# ============================================================
+
 # AES DECRYPTION
-# ============================================================
+
 def aes_decrypt(key_size, mode):
     if key_size == 128:
         key = read_file("aes128.key")
@@ -119,9 +119,9 @@ def aes_decrypt(key_size, mode):
         "aes_encrypted.bin"
     )
     start = time.perf_counter()
-    # --------------------------------------------------------
+    
     # ECB DECRYPTION
-    # --------------------------------------------------------
+   
     if mode == "ECB":
         cipher = AES.new(
             key,
@@ -135,9 +135,9 @@ def aes_decrypt(key_size, mode):
             decrypted_data,
             AES.block_size
         )
-    # --------------------------------------------------------
+
     # CFB DECRYPTION
-    # --------------------------------------------------------
+
     elif mode == "CFB":
         # First 16 bytes are IV
         iv = encrypted_data[:AES.block_size]
@@ -161,9 +161,9 @@ def aes_decrypt(key_size, mode):
     print("\nDecrypted Text:")
     print(decrypted_data.decode())
     print("\nTime :", round(elapsed, 6), "ms")
-# ============================================================
+
 # RSA ENCRYPTION
-# ============================================================
+
 def rsa_encrypt():
     public_key = RSA.import_key(
         read_file("rsa_public.pem")
@@ -186,9 +186,9 @@ def rsa_encrypt():
     print("Key Size : 2048 bits")
     print("Output   : rsa_encrypted.bin")
     print("Time     :", round(elapsed, 6), "ms")
-# ============================================================
+
 # RSA DECRYPTION
-# ============================================================
+
 def rsa_decrypt():
     private_key = RSA.import_key(
         read_file("rsa_private.pem")
@@ -211,9 +211,9 @@ def rsa_decrypt():
     print("\nDecrypted Text:")
     print(decrypted_data.decode())
     print("\nTime :", round(elapsed, 6), "ms")
-# ============================================================
+
 # RSA SIGNATURE
-# ============================================================
+
 def rsa_sign():
     private_key = RSA.import_key(
         read_file("rsa_private.pem")
@@ -234,9 +234,9 @@ def rsa_sign():
     print("\nRSA Signature Created")
     print("Output :", "signature.bin")
     print("Time   :", round(elapsed, 6), "ms")
-# ============================================================
+
 # RSA SIGNATURE VERIFICATION
-# ============================================================
+
 def rsa_verify():
     public_key = RSA.import_key(
         read_file("rsa_public.pem")
@@ -264,9 +264,9 @@ def rsa_verify():
     else:
         print("Result : INVALID")
     print("Time   :", round(elapsed, 6), "ms")
-# ============================================================
+
 # SHA-256 HASH
-# ============================================================
+
 def sha256_hash():
     data = read_file("input.txt")
     start = time.perf_counter()
@@ -277,9 +277,9 @@ def sha256_hash():
     print(hash_value.hexdigest())
     print("\nTime :", round(elapsed, 6), "ms")
 
-# ============================================================
+
 # AES BENCHMARK
-# ============================================================
+
 def aes_benchmark():
     print("\n====================================")
     print("AES EXECUTION TIME")
@@ -306,9 +306,9 @@ def aes_benchmark():
             f"AES-{size} : "
             f"{elapsed:.6f} ms"
         )
-# ============================================================
+
 # RSA BENCHMARK
-# ============================================================
+
 def rsa_benchmark():
     print("\n====================================")
     print("RSA KEY SIZE BENCHMARK")
@@ -329,17 +329,17 @@ def rsa_benchmark():
             f"RSA-{size} : "
             f"{elapsed:.6f} ms"
         )
-# ============================================================
+
 # COMPLETE BENCHMARK
-# ============================================================
+
 def benchmark():
     aes_benchmark()
     rsa_benchmark()
     print()
     
-# ============================================================
+
 # MENU
-# ============================================================
+
 def menu():
     while True:
 
@@ -421,9 +421,9 @@ def menu():
             break
         else:
             print("\nInvalid choice!")
-# ============================================================
+
 # PROGRAM START
-# ============================================================
+
 if __name__ == "__main__":
     
     print("Initializing Crypto Lab...")
